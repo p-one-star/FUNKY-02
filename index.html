@@ -220,7 +220,6 @@
             margin: 0 auto;
             position: relative;
             cursor: zoom-in;
-            /* 枠線の発光をシアンからライムイエローに変更 */
             border: 1px solid rgba(204, 255, 0, 0.4);
             box-shadow: 0 0 15px rgba(204, 255, 0, 0.15);
             background: #000;
@@ -246,7 +245,6 @@
         .desc-area {
             background: var(--bg-panel);
             border: 1px solid var(--border-dim);
-            /* 説明文の左側のボーダーを、ライムからシアンに変更 */
             border-left: 3px solid var(--neon-cyan);
             padding: 30px;
             margin-bottom: 50px;
@@ -452,7 +450,6 @@
             font-weight: bold;
         }
         
-        /* 次へボタンのボーダーをライムイエローに変更 */
         .btn-nav.next {
             border-left: 3px solid var(--neon-lime);
         }
@@ -465,7 +462,6 @@
             background: rgba(30, 30, 36, 0.8);
         }
         
-        /* ホバー時の光もライムイエローに変更 */
         .btn-nav.next:hover, .btn-nav.next:active {
             box-shadow: inset 20px 0 30px -20px rgba(204, 255, 0, 0.3);
             color: var(--neon-lime);
@@ -513,7 +509,6 @@
             max-width: 100%;
             max-height: 95vh;
             object-fit: contain;
-            /* モーダルの画像枠の発光もシアンからライムイエローに変更 */
             box-shadow: 0 0 50px rgba(204, 255, 0, 0.2);
             border: 1px solid #333;
             transition: transform 0.3s ease;
@@ -666,8 +661,8 @@
             z-index: 2001;
         }
         
-        .next-overlay-close { left: 20px; } /* 次へ(右から出る)は左上に× */
-        .prev-overlay-close { right: 20px; } /* 前へ(左から出る)は右上に× */
+        .next-overlay-close { left: 20px; } 
+        .prev-overlay-close { right: 20px; } 
 
         .next-overlay-close:hover, .next-overlay-close:active,
         .prev-overlay-close:hover, .prev-overlay-close:active {
@@ -746,7 +741,7 @@
         <div class="comic-area">
             <div class="comic-wrapper" onclick="openModal()">
                 <div style="background:#000; width:100%; aspect-ratio:4/5; display:flex; align-items:center; justify-content:center; color:#333; font-family:monospace;">
-                    <img src="02.JPG" alt="FHW Comic 02" onerror="this.onerror=null; this.src='02.jpg'; if(this.src==='02.jpg') { this.style.display='none'; this.parentNode.innerHTML='[02.JPG goes here]'; }">
+                    <img src="f02.PNG" alt="FHW Comic 02" onerror="this.onerror=null; this.src='f02.png'; if(this.src==='f02.png') { this.style.display='none'; this.parentNode.innerHTML='[f02.PNG goes here]'; }">
                 </div>
             </div>
         </div>
@@ -849,7 +844,7 @@
     <div class="modal" id="comicModal">
         <div class="modal-content">
             <div class="modal-close" onclick="closeModal(event)">×</div>
-            <img src="02.JPG" alt="FHW Comic 02 Full" onerror="this.onerror=null; this.src='02.jpg'; if(this.src==='02.jpg') { this.style.display='none'; }">
+            <img src="f02.PNG" alt="FHW Comic 02 Full" onerror="this.onerror=null; this.src='f02.png'; if(this.src==='f02.png') { this.style.display='none'; }">
         </div>
     </div>
 
@@ -877,7 +872,8 @@
             <h2 class="prev-overlay-title lang-en">BACK FOR<br>MORE<span class="question-mark">?</span></h2>
             <h2 class="prev-overlay-title lang-jp">前のヤツ<br>見るか<span class="question-mark">?</span></h2>
             
-            <button class="prev-overlay-btn" onclick="showTrainingMessageOverlay(this)">
+            <!-- PREVボタンを押すと★01のページへ遷移 -->
+            <button class="prev-overlay-btn" onclick="window.location.href='https://p-one-star.github.io/FUNKY-01/'">
                 <span class="lang-en">PREV FUNKY ★01</span>
                 <span class="lang-jp">PREV FUNKY ★01</span>
             </button>
@@ -888,6 +884,10 @@
     </div>
 
     <script>
+        // 固定のシェア用URLを設定
+        const SHARE_URL = "https://p-one-star.github.io/FUNKY-02/";
+        const MEDIA_URL = "https://p-one-star.github.io/FUNKY-02/f02.PNG";
+
         // Language Toggle Function
         function toggleLang() {
             const currentLang = document.body.getAttribute('data-lang');
@@ -917,21 +917,17 @@
             // X方向の移動量がY方向より大きい場合は「横スワイプ」と判定
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX > 80) {
-                    // 左スワイプ (右から左へ動かした)
+                    // 左スワイプ (右から左へ動かした) -> Nextへ
                     if (prevUI.classList.contains('active')) {
-                        // もし「前へ」パネルが開いていたら、それを閉じる
                         closePrevUI();
                     } else if (!modal.classList.contains('active')) {
-                        // そうでなければ「次へ」パネルを開く
                         openNextUI();
                     }
                 } else if (diffX < -80) {
-                    // 右スワイプ (左から右へ動かした)
+                    // 右スワイプ (左から右へ動かした) -> Prevへ
                     if (nextUI.classList.contains('active')) {
-                        // もし「次へ」パネルが開いていたら、それを閉じる
                         closeNextUI();
                     } else if (!modal.classList.contains('active')) {
-                        // そうでなければ「前へ」パネルを開く
                         openPrevUI();
                     }
                 }
@@ -1071,17 +1067,16 @@
         }
 
         function copyLink(btn) {
-            const url = window.location.href;
             const originalTextEn = btn.querySelector('.lang-en').innerText;
             const originalTextJp = btn.querySelector('.lang-jp').innerText;
             
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(url).then(() => {
+                navigator.clipboard.writeText(SHARE_URL).then(() => {
                     showCopiedState(btn, originalTextEn, originalTextJp);
                 });
             } else {
                 const textArea = document.createElement("textarea");
-                textArea.value = url;
+                textArea.value = SHARE_URL;
                 document.body.appendChild(textArea);
                 textArea.select();
                 try {
@@ -1108,13 +1103,13 @@
 
         function shareX() {
             const text = encodeURIComponent(getShareText());
-            const url = encodeURIComponent(window.location.href);
+            const url = encodeURIComponent(SHARE_URL);
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=550,height=420');
         }
 
         function sharePinterest() {
-            const url = encodeURIComponent(window.location.href);
-            const media = encodeURIComponent(window.location.origin + window.location.pathname.replace(/[^\/]*$/, '') + '02.JPG');
+            const url = encodeURIComponent(SHARE_URL);
+            const media = encodeURIComponent(MEDIA_URL);
             const description = encodeURIComponent(getShareText());
             window.open(`https://pinterest.com/pin/create/button/?url=${url}&media=${media}&description=${description}`, '_blank', 'width=750,height=420');
         }
